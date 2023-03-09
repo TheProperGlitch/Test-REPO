@@ -2,11 +2,11 @@ import os
 files = os.listdir('.')
 files.remove(".git")
 files.remove(".gitignore")
-print("Hello, welcome to AV D&D tracker: Version 0.1.2")
-purpose = input("Are you (l)oading an encounter or making a (n)ew one: ")
+print("Hello, welcome to AV D&D tracker: Version 0.2.1")
+purpose = input("Would you like to (l)oad an encounter, (a)dd to one, make a (n)ew one, or (c)opy a one: ")
 print(f"Current files: {files}")
-user=input("What is your encounter's name: ")
 if purpose.lower() == "l" or purpose.lower() == "load":
+    user = input("What is the encounter's name: ")
     with open(user+".py","r") as file:
         script = file.read()
         exec(script)
@@ -63,10 +63,11 @@ if purpose.lower() == "l" or purpose.lower() == "load":
                     file.write(f"amount_of_creatures = {amount_of_creatures}")
 
 elif purpose.lower() == "n" or purpose.lower() == "new":
+    user=input("What is your encounter's name: ")
     with open(user+".py","w") as file:
         contents = file.write("creatures = {")
     with open(user+".py","a") as file:
-        amount_of_creatures = int(input("How many people will there be in the encounter: "))
+        amount_of_creatures = int(input("How many creatures will there be in the encounter: "))
         for creature in range(amount_of_creatures):
             print(f"Creature number {creature+1}")
             name = input("What would you like to name this creature: ")
@@ -82,5 +83,44 @@ elif purpose.lower() == "n" or purpose.lower() == "new":
             file.write(f"{creature}:[\"{name}\",{health}, {armour}, \"{notes}\"],\n")
         file.write("}\n")
         file.write(f"amount_of_creatures = {amount_of_creatures}")
+elif purpose.lower() == "c" or purpose.lower() == "copy":
+    user=input("What is the encounter's name: ")
+    new_file_name = input("What would you like to name the new copy: ")
+    if f"{new_file_name}.py" in files:
+        print("Sorry, you cannot name a file the same name as another. Please try again.")
+    else:
+        with open(user+".py","r") as file:
+            old_file = file.read()
+        with open(new_file_name+".py","w") as file:
+            file.write(old_file)
+        print("File copied!")
+
+elif purpose.lower() == "a" or purpose.lower() == "add":
+    user = input("What file would you like to add to: ")
+    with open(user+".py","r") as file:
+        old_file = file.read()
+    exec(old_file)
+    amount = int(input("How many creatures would you like to add: "))
+    for creature in range(amount):
+        print(f"Creature number {creature+1}")
+        name = input("What would you like to name this creature: ")
+        health = int(input("How many health points should this creature have: "))
+        armour = int(input("What is the armour class of the creature: "))
+        notes = input("Any other information: ")
+        if name == "":
+            name = f"creature{creature}"
+        if health == "":
+            health = "0"
+        if armour == "":
+            armour == "0"
+        creatures[amount_of_creatures] = [name, health, armour, notes]
+        amount_of_creatures = len(creatures)
+    print(creatures)
+    with open(user+".py","w") as file:
+        file.write("creatures = "+ f"{creatures}" +" \namount_of_creatures = "+ f"{amount_of_creatures}")
+    print("Goodbye!")
+
+
+
 else:
-    print("Error: Please enter a valid letter (n or l) or word (new or load)")
+    print("Error: Please enter a valid letter (n, c, or l) or word (new, copy, or load)")
