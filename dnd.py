@@ -9,7 +9,15 @@ if purpose == "l":
         print(f"{creatures[creature][0].capitalize()} has {creatures[creature][1]} health, an AC of {creatures[creature][2]} and a side note of {creatures[creature][3]}")
     looping_battle = True
     while looping_battle:
-        looping_battle = False
+        action = int(input("Which creature would you like to interact with (0 for end): "))
+        if action == 0:
+            looping_battle = False
+        elif action < 0:
+            print("Error, number lower than zero. Please try again.")
+        elif action > amount_of_creatures:
+            print("There are not that many creatures. Please try again.")
+        else:
+            modifier = input()
 elif purpose == "n":
     with open(user+".py","w") as file:
         contents = file.write("creatures = {\n")
