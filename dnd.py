@@ -2,6 +2,7 @@ import os
 files = os.listdir('.')
 files.remove(".git")
 files.remove(".gitignore")
+files.remove("dnd.py")
 print("Hello, welcome to AV D&D tracker: Version 0.2.1")
 purpose = input("Would you like to (l)oad an encounter, (a)dd to one, make a (n)ew one, or (c)opy a one: ")
 print(f"Current files: {files}")
@@ -115,7 +116,6 @@ elif purpose.lower() == "a" or purpose.lower() == "add":
             armour == "0"
         creatures[amount_of_creatures] = [name, health, armour, notes]
         amount_of_creatures = len(creatures)
-    print(creatures)
     with open(user+".py","w") as file:
         file.write("creatures = "+ f"{creatures}" +" \namount_of_creatures = "+ f"{amount_of_creatures}")
     print("Goodbye!")
